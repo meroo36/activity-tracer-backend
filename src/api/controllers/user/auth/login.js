@@ -34,21 +34,6 @@ export default async (req, res) => {
   if (!match) return res.status(400).json(errorHelper("00045", req));
 
   const accessToken = signAccessToken(user._id);
-  const refreshToken = signRefreshToken(user._id);
-  //NOTE: 604800000 ms is equal to 7 days. So, the expiry date of the token is 7 days after.
-  await Token.updateOne(
-    { userId: user._id },
-    {
-      $set: {
-        refreshToken: refreshToken,
-        status: true,
-        expiresIn: Date.now() + 604800000,
-        createdAt: Date.now(),
-      },
-    }
-  ).catch((err) => {
-    return res.status(500).json(errorHelper("00046", req, err.message));
-  });
 
   logger("00047", user._id, getText("en", "00047"), "Info", req);
   return res.status(200).json({
@@ -56,7 +41,6 @@ export default async (req, res) => {
     resultCode: "00047",
     user,
     accessToken,
-    refreshToken,
   });
 };
 

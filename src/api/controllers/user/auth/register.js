@@ -1,18 +1,8 @@
 import { User } from "../../../../models/index.js";
 import { validateRegister } from "../../../validators/user.validator.js";
-import {
-  errorHelper,
-  generateRandomCode,
-  sendCodeToEmail,
-  logger,
-  getText,
-  turkishToEnglish,
-} from "../../../../utils/index.js";
-import ipHelper from "../../../../utils/helpers/ip-helper.js";
+import { errorHelper, logger, getText } from "../../../../utils/index.js";
 import bcrypt from "bcryptjs";
 const { hash } = bcrypt;
-import geoip from "geoip-lite";
-const { lookup } = geoip;
 
 export default async (req, res) => {
   const { error } = validateRegister(req.body);
@@ -20,7 +10,7 @@ export default async (req, res) => {
     let code = "00025";
     if (error.details[0].message.includes("email")) code = "00026";
     else if (error.details[0].message.includes("password")) code = "00027";
-    else if (error.details[0].message.includes("name")) code = "00028";
+    else if (error.details[0].message.includes("fullname")) code = "00028";
     return res
       .status(400)
       .json(errorHelper(code, req, error.details[0].message));
@@ -35,21 +25,10 @@ export default async (req, res) => {
   const hashed = await hash(req.body.password, 10);
   const file = req.file;
 
-  const geo = lookup(ipHelper(req));
-  const adress = {
-    street: req.body.street,
-    neighborhood: req.body.neighborhood,
-    district: req.body.district,
-    province: req.body.province,
-  };
-
   let user = new User({
     email: req.body.email,
     password: hashed,
-    name: req.body.name,
-    surname: req.body.surname,
-    adress: adress,
-    photoUrl: "/" + file.filename,
+    fullname: req.body.fullname,
   });
 
   user = await user.save().catch((err) => {

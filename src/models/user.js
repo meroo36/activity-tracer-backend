@@ -16,35 +16,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    name: {
+    fullname: {
       type: String,
       required: true,
     },
-    surname: {
-      type: String,
-      required: true,
-    },
-    phoneNumber: {
-      type: Number,
-    },
-    adress: {
-      street: {
-        type: String,
-      },
-      neighborhood: {
-        type: String,
-      },
-      district: {
-        type: String,
-      },
-      province: {
-        type: String,
-      },
-    },
-    photoUrl: {
-      type: String,
-    },
-    favorites: [{ type: Schema.Types.ObjectId, ref: "Pet" }],
   },
   {
     timestamps: true,

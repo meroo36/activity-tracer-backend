@@ -4,7 +4,7 @@ import { serve, setup } from "swagger-ui-express";
 import { specs, swaggerConfig } from "../../config/index.js";
 import user from "./user.js";
 import challenges from "./challenge.js";
-
+import step from "./step.js";
 const router = Router();
 
 const specDoc = swaggerJsdoc(swaggerConfig);
@@ -14,5 +14,6 @@ router.get(specs, setup(specDoc, { explorer: true }));
 
 router.use("/user", user);
 router.use("/challenges", challenges);
+router.use("/step", step);
 
 export default router;

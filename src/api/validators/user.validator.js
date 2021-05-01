@@ -4,12 +4,7 @@ export function validateRegister(body) {
   const schema = Joi.object({
     email: Joi.string().email().min(3).required(),
     password: Joi.string().min(6).max(20).required(),
-    name: Joi.string().min(3).max(24).required(),
-    surname: Joi.string().min(3).max(24).required(),
-    street: Joi.string().min(3).max(24).required(),
-    neighborhood: Joi.string().min(3).max(24).required(),
-    district: Joi.string().min(3).max(24).required(),
-    province: Joi.string().max(24).required(),
+    fullname: Joi.string().min(3).max(24).required(),
   });
   return schema.validate(body);
 }
