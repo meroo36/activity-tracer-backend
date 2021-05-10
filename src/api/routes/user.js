@@ -1,23 +1,23 @@
 import { Router } from "express";
 import { auth, imageUpload } from "../middlewares/index.js";
 import {
-  register,
-  login,
-  logout,
-  verifyEmail,
-  refreshToken,
-  forgotPassword,
-  sendVerificationCode,
-  changePassword,
-  editUser,
-  getUser,
-  deleteUser,
+    register,
+    login,
+    logout,
+    verifyEmail,
+    refreshToken,
+    forgotPassword,
+    sendVerificationCode,
+    changePassword,
+    editUser,
+    getUser,
+    deleteUser,
 } from "../controllers/user/index.js";
 
 const router = Router();
 
 // AUTH
-router.post("/", imageUpload.single("image"), register);
+router.post("/register", register);
 router.post("/login", login);
 router.post("/logout", auth, logout);
 router.post("/verify-email", verifyEmail);
@@ -29,7 +29,7 @@ router.post("/send-verification-code", sendVerificationCode);
 router.post("/change-password", auth, changePassword);
 // router.put('/', auth, imageUpload, editUser);
 
-router.get("/", auth, getUser);
+router.get("/getUser", auth, getUser);
 router.delete("/", auth, deleteUser);
 
 export default router;

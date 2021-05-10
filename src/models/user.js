@@ -3,27 +3,31 @@ const { Schema, model } = mongoose;
 import crypto from "crypto";
 
 const userSchema = new Schema(
-  {
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-      match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
+    {
+        email: {
+            type: String,
+            required: true,
+            unique: true,
+            lowercase: true,
+            match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
+        },
+        salt: String,
+        password: {
+            type: String,
+            required: true,
+        },
+        fullname: {
+            type: String,
+            required: true,
+        },
+        imageUrl: {
+            type: String,
+            required: false,
+        },
     },
-    salt: String,
-    password: {
-      type: String,
-      required: true,
-    },
-    fullname: {
-      type: String,
-      required: true,
-    },
-  },
-  {
-    timestamps: true,
-  }
+    {
+        timestamps: true,
+    }
 );
 
 const User = model("User", userSchema);

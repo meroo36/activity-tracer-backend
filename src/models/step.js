@@ -1,20 +1,15 @@
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
-const stepSchema = new Schema(
-  {
+const stepSchema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
     steps: [
-      {
-        count: Number,
-        createdAt: { type: Date, default: new Date() },
-      },
+        {
+            count: Number,
+            createdAt: { type: Date },
+        },
     ],
-  },
-  {
-    timestamps: true,
-  }
-);
+});
 
 const Step = model("Step", stepSchema);
 export default Step;
