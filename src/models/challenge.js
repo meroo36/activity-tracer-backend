@@ -3,12 +3,16 @@ const { Schema, model } = mongoose;
 
 const challengeSchema = new Schema(
     {
+        users: [{ type: Schema.Types.ObjectId, ref: "User" }],
         name: {
             type: String,
             required: true,
         },
         image: {
             type: String,
+        },
+        target: {
+            type: Number,
         },
         expireDate: { type: Date },
     },
