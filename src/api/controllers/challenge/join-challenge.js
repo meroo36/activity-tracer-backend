@@ -30,9 +30,10 @@ export default async (req, res) => {
       challenge,
     });
   } else {
-    return res.status(400).json({
+    return res.status(200).json({
       resultMessage: "Failed",
       msg: "You already signed up for this challenge!",
+      challenge,
     });
   }
 };
