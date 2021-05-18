@@ -14,3 +14,18 @@ const stepSchema = new Schema({
 
 const Step = model("Step", stepSchema);
 export default Step;
+
+/* 
+    {
+      count: 10,
+      createdAt: { type: Date },
+    }, 
+    {
+      count: 20,
+      createdAt: { type: Date },
+    }, 
+    {
+      count: 30,
+      createdAt: { type: Date },
+    },
+*/
