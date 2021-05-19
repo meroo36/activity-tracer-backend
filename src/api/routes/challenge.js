@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { auth, imageUpload } from "../middlewares/index.js";
+import { catchAsyncHandler } from "../../utils/index.js";
+
 import {
   getChallenges,
   addChallenge,
@@ -8,8 +10,8 @@ import {
 
 const router = Router();
 
-router.get("/", getChallenges);
-router.put("/add", addChallenge);
-router.put("/join", auth, joinChallenge);
+router.get("/", catchAsyncHandler(getChallenges));
+router.put("/add", catchAsyncHandler(addChallenge));
+router.put("/join", auth, catchAsyncHandler(joinChallenge));
 
 export default router;
