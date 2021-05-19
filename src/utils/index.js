@@ -9,3 +9,4 @@ export {
 export { default as ipHelper } from "./helpers/ip-helper.js";
 export { default as errorHelper } from "./helpers/error-helper.js";
 export { default as generateRandomCode } from "./helpers/generate-random-code.js";
+export { default as catchAsyncHandler } from "./catchAsyncHandler.js";
