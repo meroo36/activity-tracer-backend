@@ -1,52 +1,47 @@
 import { Step } from "../../../models/index.js";
 import moment from "moment-timezone";
 
-function getMonday() {
-  let d = new Date();
-  var day = d.getDay(),
-    diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
-  return new Date(d.setDate(diff));
-}
-
-function setStartHour(date) {
-  date.setHours(0, 0, 0, 0);
-}
-
-function setEndHour(date) {
-  date.setHours(12, 59, 59, 59);
-}
-
-function addDay(date, i) {
-  return date.setDate(date.getDate() + i);
-}
+import { getMonday, addDay } from "../../../utils/index.js";
 
 export default async function getWeeklySteps(req, res) {
-  try {
-    const user = req.user._id;
-    const userStep = await Step.findOne({ user });
-    const stepsArr = userStep.steps.sort((a, b) => a.createdAt - b.createdAt);
-    let monday = getMonday();
-    let weeklyListSteps = [];
+  const user = req.user._id;
+  const userStep = await Step.findOne({ user });
+  const stepsArr = userStep.steps.sort((a, b) => a.createdAt - b.createdAt);
+  let monday = getMonday();
+  let weeklyListSteps = [];
+  for (let i = 0; i < 7; i++) {
+    let today = addDay(monday, i == 0 ? 0 : 1);
+    let previousDay = addDay(new Date(monday), -1);
 
-    for (let i = 0; i < stepsArr.length; i++) {
-      let startHourDay = moment(monday).startOf("day").toDate();
-      let endHourDay = moment(monday).endOf("day").toDate();
+    let previousStartHour = moment(previousDay).startOf("day").toDate();
+    let todayStartHour = moment(today).startOf("day").toDate();
 
-      if (i == 0) {
-        addDay(monday, 0);
-      } else {
-        addDay(monday, 1);
-      }
-      const inThisDayArr = stepsArr.filter((element) =>
-        moment(element.createdAt).isBetween(startHourDay, endHourDay)
-      );
+    let previousEndHour = moment(previousDay).endOf("day").toDate();
+    let todayEndHour = moment(today).endOf("day").toDate();
 
-      if (!weeklyListSteps.includes(inThisDayArr[inThisDayArr.length - 1])) {
-        weeklyListSteps.push(inThisDayArr[inThisDayArr.length - 1]);
-      }
+    const previousDayArr = stepsArr.filter((element) =>
+      moment(element.createdAt).isBetween(previousStartHour, previousEndHour)
+    );
+    const todayArr = stepsArr.filter((element) =>
+      moment(element.createdAt).isBetween(todayStartHour, todayEndHour)
+    );
+
+    if (previousDayArr.length > 0 && todayArr.length > 0) {
+      const dailyCount =
+        todayArr[todayArr.length - 1].count -
+        previousDayArr[previousDayArr.length - 1].count;
+
+      weeklyListSteps.push(dailyCount);
     }
-    weeklyListSteps.length = 7;
-  } catch (error) {
-    console.log(error);
   }
+  weeklyListSteps.length = 7;
+  for (let idx = 0; idx < 7; idx++) {
+    if (weeklyListSteps[idx] == null) {
+      weeklyListSteps[idx] = 0;
+    }
+  }
+  return res.status(200).json({
+    resultMessage: "Success",
+    weeklySteps: weeklyListSteps,
+  });
 }

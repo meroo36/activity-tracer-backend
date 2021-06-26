@@ -1,29 +1,31 @@
 import { Router } from "express";
 import { auth, imageUpload } from "../middlewares/index.js";
+import { catchAsyncHandler } from "../../utils/index.js";
+
 import {
-    register,
-    login,
-    logout,
-    verifyEmail,
-    refreshToken,
-    forgotPassword,
-    sendVerificationCode,
-    changePassword,
-    editUser,
-    getUser,
-    deleteUser,
+  register,
+  login,
+  logout,
+  verifyEmail,
+  refreshToken,
+  forgotPassword,
+  sendVerificationCode,
+  changePassword,
+  editUser,
+  getUser,
+  deleteUser,
 } from "../controllers/user/index.js";
 
 const router = Router();
 
 // AUTH
-router.post("/register", register);
-router.post("/login", login);
-router.post("/logout", auth, logout);
-router.post("/verify-email", verifyEmail);
-router.post("/refresh-token", refreshToken);
-router.post("/forgot-password", auth, forgotPassword);
-router.post("/send-verification-code", sendVerificationCode);
+router.post("/register", catchAsyncHandler(register));
+router.post("/login", catchAsyncHandler(login));
+router.post("/logout", auth, catchAsyncHandler(logout));
+router.post("/verify-email", catchAsyncHandler(verifyEmail));
+router.post("/refresh-token", catchAsyncHandler(refreshToken));
+router.post("/forgot-password", auth, catchAsyncHandler(forgotPassword));
+router.post("/send-verification-code", catchAsyncHandler(sendVerificationCode));
 
 // EDIT
 router.post("/change-password", auth, changePassword);

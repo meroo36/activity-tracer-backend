@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { catchAsyncHandler } from "../../utils/index.js";
+
 import {
   getGlobalLeaderboard,
   getChallengeLeaderboard,
@@ -6,7 +8,10 @@ import {
 
 const router = Router();
 
-router.get("/global/:limit", getGlobalLeaderboard);
-router.get("/challenge/:challengeName/:limit", getChallengeLeaderboard);
+router.get("/global/:limit", catchAsyncHandler(getGlobalLeaderboard));
+router.get(
+  "/challenge/:challengeName/:limit",
+  catchAsyncHandler(getChallengeLeaderboard)
+);
 
 export default router;
